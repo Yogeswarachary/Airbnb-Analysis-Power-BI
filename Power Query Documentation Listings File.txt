@@ -1,0 +1,41 @@
+Power Query Documentation
+
+Listings.CSV file
+
+
+1. Removed Duplicates based on Listing Id and Name
+2. host_response_time: The blank rows are filled with the Mode value. The Mode value is 'a few days or more
+3. host_response_rate: This column datatype is converted from 'text' to 'decimal' and this column decimal point values are transformed into the percentage values (Decimal values are multiplied by 100, I got the exact percentage values). The new values are stored in the new column called 'host_response_rate_percent' and missing values and null values are filled with the Median (100) value.
+4. host_acceptance_rate: This column datatype is converted from 'text' to 'decimal' and this column decimal point values are transformed into the percentage values (Decimal values are multiplied by 100, I got the exact percentage values). The new values are stored in the new column called 'host_acceptance_rate_percent' and missing values and null values are filled with the Median (98) value.
+5. host_is_super: This column have two values 'f' and 't'. For easy understanding purpose I've transformed this column values as f='No', and t='False' and missing values are filled with the Mode (No).
+6. host_total_listings_count: This column have values from 1 to 7235. In this blanks are 165 rows and the rows holding the value as '0' are approximately 30,000. I've replaced empty cells and cells with the '0' values as Median value (1)
+7. host_has_profile_pic: This column have two values 'f' and 't'. For easy understanding purpose I've transformed this column values as f='No', and t='False' and missing values are filled with the Mode (Yes).
+8. host_identity_verified: This column have two values 'f' and 't'. For easy understanding purpose I've transformed this column values as f='No', and t='False' and missing values are filled with the Mode (Yes).
+9. name: Trimmed extra spaces from the 'name' column
+10. district: This column have more blank values, for this I've created mapping using the following manner
+- Create a csv file (Names Mapped_District) having city and neighbourhood columns only. remove dublicates from neighbourhood column and save the table.
+- Merge this new Mapped_District with the Listings CSV. 
+- Add a Custom column named ( New_District) and use the following query to Map the District based on City and Neighbourhood = if [district] = null or [district] = "" then [Mapped_District.city] else [district] this will generate the Mapping of New District column
+- Remove the old District column and rename new column as District and Fill missing values of District column suitable data from the City tablE
+11. accommodates: This column have values from 1 to 16 in this 85 cells have values '0'. These values I've replaced using the Median value '2'
+12. Amenities: In this Column double quotes and these are [] removed. after this, the column was split by comma delimeter. Total 32 different Amenities we have and those all are hided in Model View, but only Amenities1 and Amenities2 are only visible.
+13. minimum_nights: In this column outlier value 9999 is replaced by median value 2
+14. Maximum_nights: This column have more outliers Greater than 2500 to 1000000 above and these are replaced by the median vlaue 1125
+15. review_scores_rating(20-100, Median 96), review_scores_accuracy (1-10, Median 10 ), review_scores_cleanliness (1-10, Median 10), review_scores_communication(1-10 Median 10), review_scores_location(1-10, median 10), review_scores_value(1-10 Median 10). These columns have blank rows. Each column have 91000 blank rows. and all these column blank values are replaced with the Median values of these columns.
+16. Instant_bookable: this column have two values and f and t. These two values are replaced by f=No, t=Yes repectively
+17. I've delete the helping columns District Mappings and helping tables(Mapping District) after multiple cross checks. Till now Listing file cleaning file is completed.
+18. Converted all the Floating point columns into Whole Number columns
+
+
+Reviews Table Cleaning
+
+1. date: From date column 
+- extracted year value
+- extracted month number
+- extracted day of the week
+- extracted day name
+- extracted day
+2. Added Custom Column: is_recent
+using this formula, I've created a custom column called 'is_recent' which describes that list is recently added one or more than 6 months ago listed data
+
+
